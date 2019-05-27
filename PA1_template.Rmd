@@ -11,7 +11,7 @@ output:
 ## Introduction
 It is now possible to collect a large amount of data about personal movement using activity monitoring devices such as a [Fitbit](), [Nike Fuelband](http://www.nike.com/us/en_us/c/nikeplus-fuelband), or [Jawbone Up](https://jawbone.com/up). These type of devices are part of the "quantified self" movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behaviour, or because they are tech geeks. But these data remain under-utilized both because the raw data are hard to obtain and there is a lack of statistical methods and software for processing and interpreting the data.
 
-* Activity Monitoring Data Set: [https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip]
+* Activity Monitoring Data Set: https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip
 
 ##Preliminary steps: Loading Prerequisite Packages and Downloading the Data Set
 ```{r}
@@ -105,6 +105,7 @@ head(DT, 10)
 data.table::fwrite(x = DT, file = "clean_set.csv", quote = FALSE)
 ```
 
+
 4. a) Plotting a histogram for the total number of steps taken each day.  What is the impact of imputing missing data on the estimates of the total daily number of steps?
 ```{r}
 
@@ -129,12 +130,12 @@ totalSteps_imp[, .(`Mean # of Steps` = mean(steps), `Median # of Steps` = median
 
 ```
 
-* Vis-a-vis Mean and Median # of steps WITHOUT missing values (NA) getting subsituted with Medians
+### Vis-a-vis Mean and Median # of steps WITHOUT missing values (NA) getting subsituted with Medians
 ```{r}
 totalSteps[, .(`Mean # of Steps` = mean(steps, na.rm = TRUE), `Median # of Steps` = median(steps, na.rm = TRUE))]
 ```
 
-# Are there differences in activity patterns between weekdays and weekends?
+## Are there differences in activity patterns between weekdays and weekends?
 1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 ```{r}
 # re-read DT from the imputed Data Set

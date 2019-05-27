@@ -6,14 +6,14 @@ Introduction
 
 It is now possible to collect a large amount of data about personal movement using activity monitoring devices such as a [Fitbit](), [Nike Fuelband](http://www.nike.com/us/en_us/c/nikeplus-fuelband), or [Jawbone Up](https://jawbone.com/up). These type of devices are part of the "quantified self" movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behaviour, or because they are tech geeks. But these data remain under-utilized both because the raw data are hard to obtain and there is a lack of statistical methods and software for processing and interpreting the data.
 
--   Activity Monitoring Data Set: \[<https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip>\]
+-   Activity Monitoring Data Set: <https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip>
 
 Preliminary steps: Loading Prerequisite Packages and Downloading the Data Set
 -----------------------------------------------------------------------------
 
 ``` r
-library(data.table)
 library(ggplot2)
+library(data.table)
 
 if(!file.exists('activity.csv') ){
         if (!file.exists('repdata_data_activity.zip')){
@@ -58,7 +58,7 @@ head(totalSteps,10)
     ##  9: 2012-10-09 12811
     ## 10: 2012-10-10  9900
 
-1.  Histogram of the total number of steps taken each day
+2.  Histogram of the total number of steps taken each day
 
 ``` r
 hist_plot <- ggplot(totalSteps, aes(steps)) +
@@ -72,7 +72,7 @@ plot(hist_plot)
 
 ![](PA1_template_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
-1.  Reporting Mean and Median number of steps taken each day:
+3.  Reporting Mean and Median number of steps taken each day:
 
 ``` r
 totalSteps[, .(`Mean # of Steps` = mean(steps, na.rm = TRUE), `Median # of Steps` = median(steps, na.rm = TRUE))]
@@ -112,7 +112,7 @@ ggplot(interval, aes(x = interval , y = steps)) + geom_line(color="darkgreen", s
 
 ![](PA1_template_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
-1.  Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+2.  Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 ``` r
 interval[steps == max(steps), list(`Maximum Intreval` = interval)]
@@ -132,7 +132,7 @@ message("Total number of missing values (NAs) in the orig. Data Set: ", nrow(DT[
 
     ## Total number of missing values (NAs) in the orig. Data Set: 2304
 
-1.  Devise a strategy for filling in all of the missing values in the dataset. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+2.  Devise a strategy for filling in all of the missing values in the dataset. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
 ``` r
 # Imputing the missing values (NA) in Data Set (DT) with Median values 
@@ -154,14 +154,14 @@ head(DT, 10)
     ##  9:     0 2012-10-01       40
     ## 10:     0 2012-10-01       45
 
-1.  Create a new dataset that is equal to the original dataset but with the missing data filled in.
+3.  Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
 ``` r
 # saving the newly updated DT
 data.table::fwrite(x = DT, file = "clean_set.csv", quote = FALSE)
 ```
 
-1.  1.  Plotting a histogram for the total number of steps taken each day. What is the impact of imputing missing data on the estimates of the total daily number of steps?
+4. a)  Plotting a histogram for the total number of steps taken each day. What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 ``` r
 totalSteps_imp <- DT[, c(lapply(.SD, sum)), .SDcols = columns, by = list(date)] 
@@ -191,7 +191,7 @@ head(totalSteps_imp,20)
     ## 19: 2012-10-19 11829
     ## 20: 2012-10-20 10395
 
-4.b) What is the impact of imputing missing data on the estimates of the total daily number of steps?
+4. b) What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 ``` r
 ggplot(totalSteps_imp, aes(x = steps)) + geom_histogram(fill = "darkgreen", binwidth = 500) + labs(title = "Average Daily Steps", x = "Steps", y = "Frequency (w/Binwidth 500)")
@@ -199,7 +199,7 @@ ggplot(totalSteps_imp, aes(x = steps)) + geom_histogram(fill = "darkgreen", binw
 
 ![](PA1_template_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
-4.c) Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?
+4. c) Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?
 
 -   Mean and Median \# of Steps based on the imputed Data Set:
 
@@ -211,7 +211,7 @@ totalSteps_imp[, .(`Mean # of Steps` = mean(steps), `Median # of Steps` = median
     ##    Mean # of Steps Median # of Steps
     ## 1:         9354.23             10395
 
--   Vis-a-vis Mean and Median \# of steps WITHOUT missing values (NA) getting subsituted with Medians
+### Vis-a-vis Mean and Median \# of steps WITHOUT missing values (NA) getting subsituted with Medians
 
 ``` r
 totalSteps[, .(`Mean # of Steps` = mean(steps, na.rm = TRUE), `Median # of Steps` = median(steps, na.rm = TRUE))]
@@ -221,7 +221,7 @@ totalSteps[, .(`Mean # of Steps` = mean(steps, na.rm = TRUE), `Median # of Steps
     ## 1:        10766.19             10765
 
 Are there differences in activity patterns between weekdays and weekends?
-=========================================================================
+-------------------------------------------------------------------------
 
 1.  Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
@@ -233,7 +233,7 @@ DT <- read.csv('clean_set.csv')
 DT$DayType <-  ifelse(as.POSIXlt(DT$date)$wday %in% c(0,6), 'Weekend', 'Weekday')
 ```
 
-1.  Make a panel plot containing a time series plot (i.e. type="l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
+2.  Make a panel plot containing a time series plot (i.e. type="l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
 
 ``` r
 # create an aggregated table: group by interval, then DayType and output a 'mean' # of steps for e/grouping
