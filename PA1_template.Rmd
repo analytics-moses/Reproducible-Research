@@ -15,8 +15,8 @@ It is now possible to collect a large amount of data about personal movement usi
 
 ##Preliminary steps: Loading Prerequisite Packages and Downloading the Data Set
 ```{r}
-library(data.table)
 library(ggplot2)
+library(data.table)
 
 if(!file.exists('activity.csv') ){
         if (!file.exists('repdata_data_activity.zip')){
